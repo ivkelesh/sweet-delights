@@ -11,14 +11,4 @@ module.exports = {
       },
     ];
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "msg.datadrive.dev",
-        port: "",
-        pathname: "**",
-      },
-    ],
-  },
 };
