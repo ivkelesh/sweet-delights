@@ -151,7 +151,7 @@ export function getOrders(getOrdersListModel: GetOrdersListModel) {
 }
 
 export function getFillings() {
-  return fetch(`${url}/confectionery/fillings"`, {
+  return fetch(`${url}/confectionery/fillings`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -160,7 +160,7 @@ export function getFillings() {
 }
 
 export function getCoating() {
-  return fetch(`${url}/confectionery/caotings"`, {
+  return fetch(`${url}/confectionery/caotings`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -169,10 +169,20 @@ export function getCoating() {
 }
 
 export function getDecors() {
-  return fetch(`${url}/confectionery/decors"`, {
+  return fetch(`${url}/confectionery/decors`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
     },
+  });
+}
+
+export function calculateCakeCost(selectedArgs: any) {
+  return fetch(`${url}/confectionery/calculate-cake-cost`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(selectedArgs),
   });
 }

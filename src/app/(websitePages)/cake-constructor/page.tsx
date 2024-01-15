@@ -1,8 +1,20 @@
 "use client";
 
-import { getCoating, getDecors, getFillings } from "@/utils/httpRequests";
+import {
+  calculateCakeCost,
+  getCoating,
+  getDecors,
+  getFillings,
+} from "@/utils/httpRequests";
 import { CakeElementModel } from "@/utils/interfaces";
-import { Step, StepLabel, Stepper } from "@mui/material";
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  Step,
+  StepLabel,
+  Stepper,
+} from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -18,8 +30,8 @@ const steps = [
 ];
 
 const cakeShapes = [
-  { image: "/rounded.jpg", label: "Round" },
-  { image: "/square.jpg", label: "Square" },
+  { image: "/rounded.jpg", label: "Round", id: 0 },
+  { image: "/square.jpg", label: "Square", id: 1 },
 ];
 
 export default function Page() {
@@ -32,6 +44,7 @@ export default function Page() {
   const [decor, setDecor] = useState(null);
   const [cakeShape, setCakeShape] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [weight, setWeight] = useState("");
 
   useEffect(() => {
     switch (activeStep) {
@@ -42,28 +55,47 @@ export default function Page() {
         getCoatingList();
         break;
       case 3:
+        break;
+      case 4:
         getDecorList();
+        break;
     }
+
+    getTotalPrice();
   }, [activeStep]);
 
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
+  const getTotalPrice = async () => {
+    const res = await calculateCakeCost({
+      shape: cakeShapes[cakeShape],
+      fillingId: filling?.id,
+      decorId: decor?.id,
+      coatingId: coating?.id,
+      weight: weight,
+    });
+    const data = await res
+      .json()
+      .catch((e) => console.log("Error: ", e.message));
+    setTotalPrice(data.totalPrice);
+  };
+
   const onCakeShapeClick = (cakeShape: string) => {
     setCakeShape(cakeShape);
+
     handleNext();
   };
 
   const onCakeFillingClick = (cakeFilling: CakeElementModel) => {
     setFilling(cakeFilling);
-    setTotalPrice((prevPrice) => (prevPrice += cakeFilling.pricePerKg));
+
     handleNext();
   };
 
   const onCakeCoatingClick = (cakeCoating: CakeElementModel) => {
     setCoating(cakeCoating);
-    setTotalPrice((prevPrice) => (prevPrice += cakeCoating.pricePerKg));
 
     handleNext();
   };
@@ -126,7 +158,7 @@ export default function Page() {
         return (
           <div className="d-flex flex-wrap">
             {fillings?.map((i) => (
-              <div className="col-md-3" key={i.image}>
+              <div className="col-md-3 p-2" key={i.image}>
                 <Image
                   src={i.imageUrl}
                   alt={i.title}
@@ -147,7 +179,7 @@ export default function Page() {
         return (
           <div className="d-flex flex-wrap">
             {coatings?.map((i) => (
-              <div className="col-md-3" key={i.image}>
+              <div className="col-md-3 p-2" key={i.image}>
                 <Image
                   src={i.imageUrl}
                   alt={i.title}
@@ -164,11 +196,24 @@ export default function Page() {
           </div>
         );
 
-      case 2:
+      case 23:
+        return (
+          <FormControl>
+            <InputLabel>Weight</InputLabel>
+            <Input
+              id="weight"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              inputProps={{ maxLength: 25 }}
+            />
+          </FormControl>
+        );
+
+      case 4:
         return (
           <div className="d-flex flex-wrap">
-            {coatings?.map((i) => (
-              <div className="col-md-3" key={i.image}>
+            {decors?.map((i) => (
+              <div className="col-md-3 p-2" key={i.image}>
                 <Image
                   src={i.imageUrl}
                   alt={i.title}
