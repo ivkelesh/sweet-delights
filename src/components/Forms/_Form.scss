@@ -1,0 +1,88 @@
+.form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 360px;
+    height: 620px;
+    border-radius: 20px;
+    padding: 30px;
+    background-color: $greyLight;
+    display: flex;
+    flex-direction: column;
+}
+
+.wishlist-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-title {
+    font-size: 36px;
+    font-weight: $bold;
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.form-delete-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    color: $black;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 5;
+}
+
+.form-btn {
+    width: 180px;
+    align-self: center;
+    border-radius: 20px;
+    border: 1px solid $greyLight;
+    margin-top: 40px;
+    padding: 10px;
+    cursor: pointer;
+    text-transform: capitalize;
+    font-weight: $medium;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        border: 2px solid $grey;
+    }
+}
+
+.register-form {
+    max-height: 530px;
+}
+
+.login-form {
+    max-height: 380px;
+}
+
+#login-btn {
+    margin-top: 36px;
+}
+
+.item-form {
+    height: 650px;
+}
+
+.item-details-form {
+    height: 630px;
+}
+
+.item-form-btn {
+    margin-top: 20px;
+}

@@ -1,0 +1,107 @@
+@import "./constants.scss";
+@import "../components/Dashboard/Dashboard";
+@import "../components/Navbar/Navbar";
+@import "../components/WishlistCard/Wishlistcard";
+@import "../components/Forms/Form";
+@import "../components/LandingPage/LandingPage";
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button {
+  outline: none;
+}
+
+header {
+  margin-bottom: 94px;
+}
+
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  font-family: $font;
+  background-color: $bgColor;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.footer {
+  margin-top: 10px;
+  background-color: $brown;
+  padding: 10px;
+  color: white;
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .item {
+      text-align: center;
+    }
+
+    .social-icons {
+      display: flex;
+      align-items: center;
+
+      a {
+        margin: 0 10px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      a:hover {
+        color: $yellow; /* Цвет при наведении для всех иконок */
+      }
+
+      a[href^="https://www.instagram.com/"]:hover
+      {
+        color: #bc2a8d; /* Официальный цвет Instagram при наведении */
+      }
+
+      a[href^="https://www.facebook.com/"]:hover
+      {
+        color: #1877f2; /* Официальный цвет Facebook при наведении */
+      }
+    }
+
+    .icon-separator {
+      width: 10px;
+    }
+
+    .copyright {
+      align-items: center;
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+}
+
+.red-btn {
+  background-color: $red;
+  color: $white;
+  border: none;
+
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.8);
+  }
+}
+
+.MuiStepIcon-root.Mui-completed,
+.MuiStepIcon-root.Mui-active {
+  color: $yellow !important;
+}

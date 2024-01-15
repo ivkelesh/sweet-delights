@@ -1,0 +1,156 @@
+.card:hover {
+    box-shadow: 0 3px 17px rgb(0, 0, 0, 0.25);
+    transform: scale(1.03);
+}
+
+.card {
+    position: relative;
+    border-radius: 20px;
+    width: 300px;
+    height: 180px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    align-self: center;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+}
+
+.card-top {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: $primary;
+    width: 100%;
+    padding: 18px 24px;
+    color: $white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+        font-weight: $regular;
+        align-self: flex-start;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 250px;
+    }
+
+    h2 {
+        font-size: 14px;
+        font-weight: $light;
+        margin-left: 5px;
+    }
+}
+
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px;
+}
+
+.card-btn {
+    width: 80px;
+    height: 36px !important;
+    border-radius: 20px;
+    border: 1px solid $greyLight;
+    color: $grey;
+    background-color: $white;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        border: none !important;
+    }
+}
+
+.card-time {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.primary-btn {
+    width: 130px;
+    height: 42px;
+    background-color: $brown;
+    color: $white;
+    border-radius: 20px;
+    border: 1px solid $brown;
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    outline: none; /* Убираем синий овал */
+
+    &:hover {
+        background-color: $greyLight;
+        color: $brown;
+        border: 2px solid $grey;
+    }
+}
+
+.more-details-btn {
+    width: 130px;
+    height: 42px;
+}
+
+.grey-btn {
+    border: none;
+    background-color: $greyLight;
+    color: $lightBlue;
+
+    &:hover {
+        background-color: $primary;
+        color: $white;
+    }
+}
+
+.card-delete-btn {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease-out;
+    opacity: 0;
+    color: $greyLight;
+    pointer-events: none;
+}
+
+.card:hover .card-delete-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#cancel-btn {
+    &:hover {
+        background-color: $greyLight;
+        color: $lightBlue;
+    }
+}
+
+#continue-btn {
+    &:hover {
+        background-color: $primary;
+        color: $greyLight;
+    }
+}
+
+.dialog-btn {
+    transition: all 0.3s ease-in-out !important;
+    font-weight: $medium !important;
+}
+
+.card-title {
+    text-transform: capitalize;
+}

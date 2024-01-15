@@ -1,0 +1,119 @@
+.landing-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
+  margin: auto;
+  height: 60vh;
+}
+
+.landing-title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.landing-img-container {
+  margin-right: 30px;
+  min-width: 300px;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-title {
+  font-size: 64px;
+  line-height: 68px;
+  font-weight: $bold;
+  text-align: left;
+}
+
+.nav-2 {
+  padding: 0 15px;
+  border-radius: 50%;
+  background-color: $primary;
+  color: $white;
+  font-weight: $regular;
+}
+
+.title-2 {
+  padding: 0 15px;
+  background-color: $primary;
+  border-radius: 24px;
+  color: $white;
+  font-weight: $regular;
+}
+
+.landing-greeting {
+  width: 400px;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: $regular;
+  color: $grey;
+}
+
+.nav-landing-container {
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.landing-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: rotate(-2deg) scale(1.02);
+  }
+}
+
+.landing-button-container {
+  display: flex;
+}
+
+.register-btn {
+  margin-right: 18px;
+}
+
+.login-btn {
+  margin-right: 0;
+}
+
+#headerwrap {
+  background: url(https://utmstorageaccount.blob.core.windows.net/others/back4.jpg)
+    no-repeat center top;
+  padding-top: 150px;
+  text-align: center;
+  background-attachment: relative;
+  background-position: center center;
+  min-height: 600px;
+  width: 100%;
+  box-shadow: 0 0 60px 10px #bed7ea;
+  -webkit-background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#headerwrap h1 {
+  color: #eceef4;
+  padding-top: 30px;
+  padding-bottom: 400px;
+  letter-spacing: 4px;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.category-grid {
+  margin-top: 30px;
+}
