@@ -111,7 +111,7 @@ export interface OrdersListModel {
   createdAt: Date;
 }
 
-export interface FillingsModel {
+export interface CakeElementModel {
   id: number;
   pricePerKg: number;
   imageName: string;

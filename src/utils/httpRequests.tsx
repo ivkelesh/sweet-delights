@@ -5,7 +5,6 @@ import {
   ItemData,
   PagedRequest,
   GetOrdersListModel,
-  FillingsModel,
 } from "./interfaces";
 
 // export const url = 'https://wishlist-service-dev.herokuapp.com/api';
@@ -153,7 +152,25 @@ export function getOrders(getOrdersListModel: GetOrdersListModel) {
 
 export function getFillings() {
   return fetch(`${url}/confectionery/fillings"`, {
-    method: "POST",
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+}
+
+export function getCoating() {
+  return fetch(`${url}/confectionery/caotings"`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+}
+
+export function getDecors() {
+  return fetch(`${url}/confectionery/decors"`, {
+    method: "GET",
     headers: {
       "Content-type": "application/json",
     },
