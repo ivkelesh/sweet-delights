@@ -1,4 +1,24 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+module.exports = {
+  experimental: {
+    serverActions: true,
+  },
 
-module.exports = nextConfig
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://localhost:8080/api/:path*",
+      },
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "msg.datadrive.dev",
+        port: "",
+        pathname: "**",
+      },
+    ],
+  },
+};

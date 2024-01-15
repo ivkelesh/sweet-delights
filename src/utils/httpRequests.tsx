@@ -9,7 +9,7 @@ import {
 } from "./interfaces";
 
 // export const url = 'https://wishlist-service-dev.herokuapp.com/api';
-export const url = "http://localhost:8080/api";
+export const url = "/api";
 
 // Authentication
 export function registerUser(registerData: RegisterCredentials) {
