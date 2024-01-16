@@ -103,7 +103,7 @@ function NavBar({
                 Products
                 <span className="dropdown-indicator">&#9662;</span>
                 <div className="dropdown-menu" id="products-menu">
-                  <a href="#cakes">Cakes</a>
+                  <a href="/cakes">Cakes</a>
                   <a href="#coating">Coating</a>
                   <a href="#decor">Decor</a>
                   <a href="#filling">Filling</a>

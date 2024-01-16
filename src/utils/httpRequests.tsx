@@ -5,6 +5,7 @@ import {
   ItemData,
   PagedRequest,
   GetOrdersListModel,
+  GenerateReportModel,
 } from "./interfaces";
 
 // export const url = 'https://wishlist-service-dev.herokuapp.com/api';
@@ -150,6 +151,15 @@ export function getOrders(getOrdersListModel: GetOrdersListModel) {
   });
 }
 
+export function getOrderById(orderId: number) {
+  return fetch(`https://localhost:7091/api/orders/${orderId}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+}
+
 export function getFillings() {
   return fetch(`${url}/confectionery/fillings`, {
     method: "GET",
@@ -184,5 +194,71 @@ export function calculateCakeCost(selectedArgs: any) {
       "Content-type": "application/json",
     },
     body: JSON.stringify(selectedArgs),
+  });
+}
+
+export function exportAsExcel(getOrdersListModel: GetOrdersListModel) {
+  return fetch('https://localhost:7091/api/orders/get-orders-excel', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(getOrdersListModel),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Orders.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  })
+  .catch(error => {
+    console.error('Error exporting as Excel:', error);
+  });
+}
+
+
+export function generateReport(generateReportModel: GenerateReportModel) {
+  return fetch('https://localhost:7091/api/orders/generate-report', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(generateReportModel),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Orders_Report.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  })
+  .catch(error => {
+    console.error('Error generating the Report:', error);
+  });
+}
+
+export function generateImages(prompt: string) {
+  return fetch(`https://confectioneryplatform.azurewebsites.net/api/orders/generate-images-parallel?prompt=${prompt}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
   });
 }

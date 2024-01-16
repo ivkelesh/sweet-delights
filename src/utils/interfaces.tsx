@@ -88,7 +88,8 @@ export interface PagedResult<T> {
 export interface GetOrdersListModel {
   pageSize: number;
   pageNumber: number;
-  productTypes?: number[];
+  id?: number;
+  productTypes?: number [];
   locality?: string;
   deliveryType?: number;
   status?: number;
@@ -123,3 +124,60 @@ export interface CakeElementModel {
   title: string;
   description: string;
 }
+
+export interface GenerateReportModel {
+  dateFrom?: Date,
+  dateTo?: Date,
+  reportDate?: Date,
+  reportType: number
+}
+
+export interface CatalogProduct {
+  id: number,
+  title: string,
+  description?: string,
+  productType: number,
+  category?: number,
+  pricePerKg: number,
+  imageUrl: string
+}
+
+export interface CakeComponent {
+  title: string,
+  imageUrl: string
+}
+
+export interface OrderedProduct {
+  id: number,
+  productType: number,
+  filling?: CakeComponent,
+  decor?: CakeComponent,
+  coating?: CakeComponent,
+  weight: number,
+  comments?: string,
+  inscription?: string,
+  shape?: number,
+  aiPrompt?: string,
+  totalPrice: number,
+  imageUrl: string,
+  productId?: number,
+  catalogProduct?: CatalogProduct
+}
+
+export interface Order {
+  id: number,
+  product: OrderedProduct,
+  firstName: string,
+  lastName: string,
+  locality?: string,
+  address?: string,
+  phoneNumber?: string,
+  deliveryType?: number,
+  deliveryCost?: number,
+  deliveryDate?: Date,
+  quantity?: number,
+  totalPrice: number,
+  status: number,
+}
+
+
