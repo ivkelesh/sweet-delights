@@ -8,6 +8,11 @@ export enum ProductType {
     Pickup = 'Pickup',
     CourierDelivery = 'Courier Delivery',
   }
+
+  export enum Shape {
+    Rounded = 'Rounded',
+    Square = 'Square',
+  }
   
   export enum OrderStatus {
     New = 'New',
@@ -55,5 +60,9 @@ export enum ProductType {
       3: OrderStatus.Ready,
       4: OrderStatus.Delivered,
       5: OrderStatus.Rejected,
+    },
+    Shape: {
+      0: Shape.Rounded,
+      1: Shape.Square,
     },
   };
