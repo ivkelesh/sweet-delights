@@ -99,14 +99,17 @@ function NavBar({
               </Link>
             </div>
             <div className="nav-links">
+              <a className="nav-link" href="#my-orders">
+                My orders
+              </a>
               <div className="nav-link">
                 Products
                 <span className="dropdown-indicator">&#9662;</span>
                 <div className="dropdown-menu" id="products-menu">
                   <a href="/cakes">Cakes</a>
-                  <a href="#coating">Coating</a>
-                  <a href="#decor">Decor</a>
-                  <a href="#filling">Filling</a>
+                  <a href="/coating">Coating</a>
+                  <a href="/decors">Decor</a>
+                  <a href="/fillings">Filling</a>
                 </div>
               </div>
               <a className="nav-link" href="/cake-constructor">
