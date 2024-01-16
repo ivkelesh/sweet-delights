@@ -2,6 +2,7 @@
 
 import {
   calculateCakeCost,
+  generateImages,
   getCoating,
   getDecors,
   getFillings,
@@ -14,6 +15,7 @@ import {
   Step,
   StepLabel,
   Stepper,
+  TextareaAutosize,
 } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -42,9 +44,13 @@ export default function Page() {
   const [coating, setCoating] = useState(null);
   const [decors, setDecors] = useState(null);
   const [decor, setDecor] = useState(null);
+  const [inscription, setInscription] = useState("");
   const [cakeShape, setCakeShape] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [weight, setWeight] = useState("");
+  const [promt, setPromt] = useState("");
+  const [generatedImages, setGeneratedImages] = useState(null);
+  const [generatedImage, setGeneratedImage] = useState(null);
 
   useEffect(() => {
     switch (activeStep) {
@@ -69,17 +75,26 @@ export default function Page() {
   };
 
   const getTotalPrice = async () => {
-    const res = await calculateCakeCost({
-      shape: cakeShapes[cakeShape],
-      fillingId: filling?.id,
-      decorId: decor?.id,
-      coatingId: coating?.id,
-      weight: weight,
-    });
+    // const res = await calculateCakeCost({
+    //   shape: cakeShapes[cakeShape],
+    //   fillingId: filling?.id,
+    //   decorId: decor?.id,
+    //   coatingId: coating?.id,
+    //   weight: weight,
+    // });
+    // const data = await res
+    //   .json()
+    //   .catch((e) => console.log("Error: ", e.message));
+    // setTotalPrice(data.totalPrice);
+  };
+
+  const onGenerateImages = async () => {
+    const res = await generateImages(promt);
     const data = await res
       .json()
       .catch((e) => console.log("Error: ", e.message));
-    setTotalPrice(data.totalPrice);
+
+    setGeneratedImages(data.ImageUrls);
   };
 
   const onCakeShapeClick = (cakeShape: string) => {
@@ -196,7 +211,7 @@ export default function Page() {
           </div>
         );
 
-      case 23:
+      case 3:
         return (
           <FormControl>
             <InputLabel>Weight</InputLabel>
@@ -225,6 +240,78 @@ export default function Page() {
                 />
 
                 <h2 className="text-center mt-3">{i.title}</h2>
+              </div>
+            ))}
+          </div>
+        );
+
+      case 5:
+        return (
+          <FormControl>
+            <InputLabel>Insription on the Cake</InputLabel>
+            <Input
+              id="weight"
+              value={inscription}
+              onChange={(e) => setInscription(e.target.value)}
+            />
+          </FormControl>
+        );
+
+      case 6:
+        return (
+          <div className="d-flex flex-column gap-4">
+            <FormControl>
+              <InputLabel>Generate an Image</InputLabel>
+              <Input
+                id="generate"
+                value={promt}
+                onChange={(e) => setPromt(e.target.value)}
+              />
+
+              <button
+                onClick={onGenerateImages}
+                className="primary-btn form-btn"
+              >
+                Generate Image
+              </button>
+            </FormControl>
+
+            {generatedImages && (
+              <div>
+                <h2>Select generated Image</h2>
+
+                <div className="row">
+                  {generatedImages?.map((imageUrl) => (
+                    <div className="col-md-3" key={imageUrl}>
+                      <Image
+                        src={imageUrl}
+                        height={300}
+                        width={300}
+                        alt="Generated Image"
+                        className="img-fluid"
+                        onClick={() => setGeneratedImage(imageUrl)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+
+      case 7:
+        return (
+          <div>
+            {generatedImages?.map((imageUrl) => (
+              <div className="col-md-3" key={imageUrl}>
+                <Image
+                  src={imageUrl}
+                  height={300}
+                  width={300}
+                  alt="Generated Image"
+                  className="img-fluid"
+                  onClick={() => setGeneratedImage(imageUrl)}
+                />
               </div>
             ))}
           </div>

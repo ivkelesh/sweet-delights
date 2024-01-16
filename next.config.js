@@ -4,7 +4,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "'utmstorageaccount.blob.core.windows.net",
+        hostname: "utmstorageaccount.blob.core.windows.net",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "confectioneryplatform.azurewebsites.net",
         port: "",
         pathname: "**",
       },

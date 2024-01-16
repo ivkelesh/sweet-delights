@@ -186,3 +186,15 @@ export function calculateCakeCost(selectedArgs: any) {
     body: JSON.stringify(selectedArgs),
   });
 }
+
+export function generateImages(prompt: string) {
+  return fetch(
+    `https://confectioneryplatform.azurewebsites.net/api/orders/generate-images-parallel?prompt=${prompt}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+}
