@@ -255,14 +255,6 @@ export function generateReport(generateReportModel: GenerateReportModel) {
 }
 
 export function generateImages(prompt: string) {
-  return fetch(`https://confectioneryplatform.azurewebsites.net/api/orders/generate-images-parallel?prompt=${prompt}`, {
-    method: "GET",
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
-
-export function generateImages(prompt: string) {
   return fetch(
     `https://confectioneryplatform.azurewebsites.net/api/orders/generate-images-parallel?prompt=${prompt}`,
     {
