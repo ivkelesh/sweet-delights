@@ -132,7 +132,37 @@ export function updateItem(
 }
 
 export function getCakes(pagedRequest: PagedRequest) {
-  return fetch("https://localhost:7091/api/products/paged", {
+  return fetch("https://localhost:7091/api/products/cakes", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(pagedRequest),
+  });
+}
+
+export function getCheesecakes(pagedRequest: PagedRequest) {
+  return fetch("https://localhost:7091/api/products/cheesecakes", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(pagedRequest),
+  });
+}
+
+export function getMacarons(pagedRequest: PagedRequest) {
+  return fetch("https://localhost:7091/api/products/macarons", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(pagedRequest),
+  });
+}
+
+export function getCupcakes(pagedRequest: PagedRequest) {
+  return fetch("https://localhost:7091/api/products/cupcakes", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
