@@ -105,3 +105,8 @@ header {
 .MuiStepIcon-root.Mui-active {
   color: $yellow !important;
 }
+
+button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -9,13 +9,13 @@ import {
 } from "@/utils/httpRequests";
 import { CakeElementModel } from "@/utils/interfaces";
 import {
+  Button,
   FormControl,
   Input,
   InputLabel,
   Step,
   StepLabel,
   Stepper,
-  TextareaAutosize,
 } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -51,6 +51,8 @@ export default function Page() {
   const [promt, setPromt] = useState("");
   const [generatedImages, setGeneratedImages] = useState(null);
   const [generatedImage, setGeneratedImage] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [orderComment, setOrderComment] = useState("false");
 
   useEffect(() => {
     switch (activeStep) {
@@ -89,12 +91,14 @@ export default function Page() {
   };
 
   const onGenerateImages = async () => {
-    const res = await generateImages(promt);
-    const data = await res
-      .json()
-      .catch((e) => console.log("Error: ", e.message));
+    setLoading(true);
 
-    setGeneratedImages(data.ImageUrls);
+    await generateImages(promt)
+      .then((res) => res.json())
+      .then((data) => {
+        setGeneratedImages(data.imageUrls);
+        setLoading(false);
+      });
   };
 
   const onCakeShapeClick = (cakeShape: string) => {
@@ -271,10 +275,25 @@ export default function Page() {
               <button
                 onClick={onGenerateImages}
                 className="primary-btn form-btn"
+                disabled={isLoading}
               >
                 Generate Image
               </button>
             </FormControl>
+
+            {isLoading && (
+              <div className="d-flex justify-content-center gap-3">
+                <div className="spinner-grow" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <div className="spinner-grow" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <div className="spinner-grow" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
 
             {generatedImages && (
               <div>
@@ -302,18 +321,22 @@ export default function Page() {
       case 7:
         return (
           <div>
-            {generatedImages?.map((imageUrl) => (
-              <div className="col-md-3" key={imageUrl}>
-                <Image
-                  src={imageUrl}
-                  height={300}
-                  width={300}
-                  alt="Generated Image"
-                  className="img-fluid"
-                  onClick={() => setGeneratedImage(imageUrl)}
-                />
-              </div>
-            ))}
+            <FormControl>
+              <InputLabel>Order comments</InputLabel>
+              <Input
+                id="generate"
+                value={promt}
+                onChange={(e) => setOrderComment(e.target.value)}
+              />
+
+              <button
+                onClick={onGenerateImages}
+                className="primary-btn form-btn"
+                disabled={isLoading}
+              >
+                Send
+              </button>
+            </FormControl>
           </div>
         );
     }
