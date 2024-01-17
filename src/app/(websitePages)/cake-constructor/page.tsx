@@ -24,7 +24,7 @@ const steps = [
   "Choose a cake shape",
   "Choose a filling",
   "Choose a coating",
-  " Specify the weight",
+  "Specify the weight",
   "Decor",
   "Insription on the cake",
   "Upload or Generate an image",
@@ -77,17 +77,17 @@ export default function Page() {
   };
 
   const getTotalPrice = async () => {
-    // const res = await calculateCakeCost({
-    //   shape: cakeShapes[cakeShape],
-    //   fillingId: filling?.id,
-    //   decorId: decor?.id,
-    //   coatingId: coating?.id,
-    //   weight: weight,
-    // });
-    // const data = await res
-    //   .json()
-    //   .catch((e) => console.log("Error: ", e.message));
-    // setTotalPrice(data.totalPrice);
+    const res = await calculateCakeCost({
+      shape: cakeShapes[cakeShape],
+      fillingId: filling?.id,
+      decorId: decor?.id,
+      coatingId: coating?.id,
+      weight: weight,
+    });
+    const data = await res
+      .json()
+      .catch((e) => console.log("Error: ", e.message));
+    setTotalPrice(data.totalPrice);
   };
 
   const onGenerateImages = async () => {
@@ -121,7 +121,12 @@ export default function Page() {
 
   const onCakeDecorClick = (cakeDecor: CakeElementModel) => {
     setDecor(cakeDecor);
-    setTotalPrice((prevPrice) => (prevPrice += cakeDecor.pricePerKg));
+
+    handleNext();
+  };
+
+  const onGeneratedImageClick = (imageUrl) => {
+    setGeneratedImage(imageUrl);
 
     handleNext();
   };
@@ -258,6 +263,10 @@ export default function Page() {
               value={inscription}
               onChange={(e) => setInscription(e.target.value)}
             />
+
+            <button onClick={handleNext} className="primary-btn form-btn">
+              Save
+            </button>
           </FormControl>
         );
 
@@ -308,7 +317,7 @@ export default function Page() {
                         width={300}
                         alt="Generated Image"
                         className="img-fluid"
-                        onClick={() => setGeneratedImage(imageUrl)}
+                        onClick={() => onGeneratedImageClick(imageUrl)}
                       />
                     </div>
                   ))}
@@ -325,7 +334,7 @@ export default function Page() {
               <InputLabel>Order comments</InputLabel>
               <Input
                 id="generate"
-                value={promt}
+                value={orderComment}
                 onChange={(e) => setOrderComment(e.target.value)}
               />
 
@@ -367,7 +376,19 @@ export default function Page() {
               {cakeShape && <li>{cakeShape}</li>}
               {filling && <li>{filling.title}</li>}
               {coating && <li>{coating.title}</li>}
+              {weight && <li>{weight}</li>}
               {decor && <li>{decor.title}</li>}
+              {inscription && <li>{inscription}</li>}
+              {generatedImage && (
+                <li>
+                  <Image
+                    src={generatedImage}
+                    alt="selected image"
+                    width={50}
+                    height={50}
+                  />
+                </li>
+              )}
             </ul>
           </div>
         </div>
