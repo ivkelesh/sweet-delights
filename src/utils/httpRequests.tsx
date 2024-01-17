@@ -191,7 +191,7 @@ export function getOrderById(orderId: number) {
 }
 
 export function getFillings() {
-  return fetch("http://localhost:8082/api/confectionery/fillings", {
+  return fetch(`${url}/confectionery/fillings`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -200,7 +200,7 @@ export function getFillings() {
 }
 
 export function getCoating() {
-  return fetch("http://localhost:8082/api/confectionery/coatings", {
+  return fetch(`${url}/confectionery/coatings`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -209,7 +209,7 @@ export function getCoating() {
 }
 
 export function getDecors() {
-  return fetch("http://localhost:8082/api/confectionery/decors", {
+  return fetch(`${url}/confectionery/decors`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -218,7 +218,7 @@ export function getDecors() {
 }
 
 export function calculateCakeCost(selectedArgs: any) {
-  return fetch("http://localhost:8082/api/confectionery/calculate-cake-cost", {
+  return fetch(`${url}/confectionery/calculate-cake-cost`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -228,60 +228,59 @@ export function calculateCakeCost(selectedArgs: any) {
 }
 
 export function exportAsExcel(getOrdersListModel: GetOrdersListModel) {
-  return fetch('https://localhost:7091/api/orders/get-orders-excel', {
-    method: 'POST',
+  return fetch("https://localhost:7091/api/orders/get-orders-excel", {
+    method: "POST",
     headers: {
-      'Content-type': 'application/json',
+      "Content-type": "application/json",
     },
     body: JSON.stringify(getOrdersListModel),
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(new Blob([blob]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Orders.xlsx');
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
-  })
-  .catch(error => {
-    console.error('Error exporting as Excel:', error);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Orders.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    })
+    .catch((error) => {
+      console.error("Error exporting as Excel:", error);
+    });
 }
 
-
 export function generateReport(generateReportModel: GenerateReportModel) {
-  return fetch('https://localhost:7091/api/orders/generate-report', {
-    method: 'POST',
+  return fetch("https://localhost:7091/api/orders/generate-report", {
+    method: "POST",
     headers: {
-      'Content-type': 'application/json',
+      "Content-type": "application/json",
     },
     body: JSON.stringify(generateReportModel),
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(new Blob([blob]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Orders_Report.xlsx');
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
-  })
-  .catch(error => {
-    console.error('Error generating the Report:', error);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Orders_Report.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    })
+    .catch((error) => {
+      console.error("Error generating the Report:", error);
+    });
 }
 
 export function generateImages(prompt: string) {
@@ -294,4 +293,14 @@ export function generateImages(prompt: string) {
       },
     }
   );
+}
+
+export function postCake(payload) {
+  return fetch(`${url}/confectionery/save-order`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
 }

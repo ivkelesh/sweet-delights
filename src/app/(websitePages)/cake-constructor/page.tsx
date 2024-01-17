@@ -1,5 +1,6 @@
 "use client";
 
+import { connect } from "react-redux";
 import {
   calculateCakeCost,
   generateImages,
@@ -9,22 +10,27 @@ import {
 } from "@/utils/httpRequests";
 import { CakeElementModel } from "@/utils/interfaces";
 import {
+  Button,
   FormControl,
+  FormControlLabel,
+  FormLabel,
   Input,
   InputLabel,
+  Radio,
+  RadioGroup,
   Step,
   StepLabel,
   Stepper,
-  TextareaAutosize,
 } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import * as actions from "@/store/actions/actions";
 
 const steps = [
   "Choose a cake shape",
   "Choose a filling",
   "Choose a coating",
-  " Specify the weight",
+  "Specify the weight",
   "Decor",
   "Insription on the cake",
   "Upload or Generate an image",
@@ -36,7 +42,7 @@ const cakeShapes = [
   { image: "/square.jpg", label: "Square", id: 1 },
 ];
 
-export default function Page() {
+function Page({ toggleOrderForm }) {
   const [activeStep, setActiveStep] = useState(0);
   const [fillings, setFillings] = useState(null);
   const [filling, setFilling] = useState(null);
@@ -51,6 +57,29 @@ export default function Page() {
   const [promt, setPromt] = useState("");
   const [generatedImages, setGeneratedImages] = useState(null);
   const [generatedImage, setGeneratedImage] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [orderComment, setOrderComment] = useState("");
+
+  const constructedCake = {
+    shape: cakeShapes[cakeShape],
+    fillingId: filling?.id,
+    decorId: decor?.id,
+    coatingId: coating?.id,
+    weight: weight,
+    productType: 2,
+    comments: orderComment,
+    inscription: inscription,
+    totalPrice: totalPrice,
+    aiPromt: promt,
+    currency: 0,
+    imageName: null,
+    imageUrl: generatedImage,
+    createdBy: "User",
+    createdAt: "2023-11-10T22:00:00.000+00:00",
+    updatedBy: null,
+    updatedAt: null,
+    productId: null,
+  };
 
   useEffect(() => {
     switch (activeStep) {
@@ -68,6 +97,7 @@ export default function Page() {
     }
 
     getTotalPrice();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
 
   const handleNext = async () => {
@@ -75,26 +105,23 @@ export default function Page() {
   };
 
   const getTotalPrice = async () => {
-    // const res = await calculateCakeCost({
-    //   shape: cakeShapes[cakeShape],
-    //   fillingId: filling?.id,
-    //   decorId: decor?.id,
-    //   coatingId: coating?.id,
-    //   weight: weight,
-    // });
-    // const data = await res
-    //   .json()
-    //   .catch((e) => console.log("Error: ", e.message));
-    // setTotalPrice(data.totalPrice);
-  };
+    const res = await calculateCakeCost(constructedCake);
 
-  const onGenerateImages = async () => {
-    const res = await generateImages(promt);
     const data = await res
       .json()
       .catch((e) => console.log("Error: ", e.message));
+    setTotalPrice(data.totalPrice);
+  };
 
-    setGeneratedImages(data.ImageUrls);
+  const onGenerateImages = async () => {
+    setLoading(true);
+
+    await generateImages(promt)
+      .then((res) => res.json())
+      .then((data) => {
+        setGeneratedImages(data.imageUrls);
+        setLoading(false);
+      });
   };
 
   const onCakeShapeClick = (cakeShape: string) => {
@@ -117,7 +144,12 @@ export default function Page() {
 
   const onCakeDecorClick = (cakeDecor: CakeElementModel) => {
     setDecor(cakeDecor);
-    setTotalPrice((prevPrice) => (prevPrice += cakeDecor.pricePerKg));
+
+    handleNext();
+  };
+
+  const onGeneratedImageClick = (imageUrl) => {
+    setGeneratedImage(imageUrl);
 
     handleNext();
   };
@@ -214,13 +246,31 @@ export default function Page() {
       case 3:
         return (
           <FormControl>
-            <InputLabel>Weight</InputLabel>
-            <Input
-              id="weight"
+            <FormLabel id="demo-radio-buttons-group-label">Weight</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
               value={weight}
+              name="radio-buttons-group"
               onChange={(e) => setWeight(e.target.value)}
-              inputProps={{ maxLength: 25 }}
-            />
+            >
+              <FormControlLabel
+                value="1.5"
+                control={<Radio />}
+                label="1.5 kg"
+              />
+              <FormControlLabel value="2" control={<Radio />} label="2 kg" />
+              <FormControlLabel
+                value="2.5"
+                control={<Radio />}
+                label="2.5 kg"
+              />
+              <FormControlLabel value="3" control={<Radio />} label="3 kg" />
+              <FormControlLabel
+                value="3.5"
+                control={<Radio />}
+                label="3.5 kg"
+              />
+            </RadioGroup>
           </FormControl>
         );
 
@@ -247,14 +297,20 @@ export default function Page() {
 
       case 5:
         return (
-          <FormControl>
-            <InputLabel>Insription on the Cake</InputLabel>
-            <Input
-              id="weight"
-              value={inscription}
-              onChange={(e) => setInscription(e.target.value)}
-            />
-          </FormControl>
+          <div className="row">
+            <FormControl>
+              <InputLabel>Insription on the Cake</InputLabel>
+              <Input
+                id="weight"
+                value={inscription}
+                onChange={(e) => setInscription(e.target.value)}
+              />
+
+              <button onClick={handleNext} className="primary-btn form-btn">
+                Save
+              </button>
+            </FormControl>
+          </div>
         );
 
       case 6:
@@ -271,10 +327,25 @@ export default function Page() {
               <button
                 onClick={onGenerateImages}
                 className="primary-btn form-btn"
+                disabled={isLoading}
               >
                 Generate Image
               </button>
             </FormControl>
+
+            {isLoading && (
+              <div className="d-flex justify-content-center gap-3">
+                <div className="spinner-grow" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <div className="spinner-grow" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <div className="spinner-grow" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
 
             {generatedImages && (
               <div>
@@ -289,7 +360,7 @@ export default function Page() {
                         width={300}
                         alt="Generated Image"
                         className="img-fluid"
-                        onClick={() => setGeneratedImage(imageUrl)}
+                        onClick={() => onGeneratedImageClick(imageUrl)}
                       />
                     </div>
                   ))}
@@ -301,19 +372,15 @@ export default function Page() {
 
       case 7:
         return (
-          <div>
-            {generatedImages?.map((imageUrl) => (
-              <div className="col-md-3" key={imageUrl}>
-                <Image
-                  src={imageUrl}
-                  height={300}
-                  width={300}
-                  alt="Generated Image"
-                  className="img-fluid"
-                  onClick={() => setGeneratedImage(imageUrl)}
-                />
-              </div>
-            ))}
+          <div className="row">
+            <FormControl>
+              <InputLabel>Order comments</InputLabel>
+              <Input
+                id="generate"
+                value={orderComment}
+                onChange={(e) => setOrderComment(e.target.value)}
+              />
+            </FormControl>
           </div>
         );
     }
@@ -339,16 +406,51 @@ export default function Page() {
             {stepContent()}
           </div>
           <div className="col-md-2">
-            <h4>Total Price: {totalPrice}</h4>
-            <ul className="ms-auto">
-              {cakeShape && <li>{cakeShape}</li>}
-              {filling && <li>{filling.title}</li>}
-              {coating && <li>{coating.title}</li>}
-              {decor && <li>{decor.title}</li>}
-            </ul>
+            <div className="d-flex h-100 flex-column justify-content-between gap-4 gap-lg-5">
+              <div>
+                <h5>Total Price: {totalPrice} MDL</h5>
+                <ul className="ms-auto">
+                  {cakeShape && <li>Shape: {cakeShape}</li>}
+                  {filling && <li>Filling: {filling.title}</li>}
+                  {coating && <li>Coating: {coating.title}</li>}
+                  {weight && <li>Weight: {weight} kg</li>}
+                  {decor && <li>Decor: {decor.title}</li>}
+                  {inscription && <li>Inscription: {inscription}</li>}
+                  {generatedImage && (
+                    <li>
+                      <Image
+                        src={generatedImage}
+                        alt="selected image"
+                        width={50}
+                        height={50}
+                      />
+                    </li>
+                  )}
+
+                  {orderComment && <li> Comment: {orderComment}</li>}
+                </ul>
+              </div>
+
+              {activeStep === 7 && (
+                <button
+                  className="primary-btn form-btn"
+                  onClick={toggleOrderForm(constructedCake)}
+                >
+                  Order
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleOrderForm: (data) => dispatch(actions.showOrderForm(data)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Page);

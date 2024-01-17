@@ -10,7 +10,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "confectioneryplatform.azurewebsites.net",
+        hostname: "oaidalleapiprodscus.blob.core.windows.net",
         port: "",
         pathname: "**",
       },
