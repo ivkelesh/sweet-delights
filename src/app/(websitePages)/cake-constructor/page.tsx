@@ -1,5 +1,6 @@
 "use client";
 
+import { connect } from "react-redux";
 import {
   calculateCakeCost,
   generateImages,
@@ -23,6 +24,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import * as actions from "@/store/actions/actions";
 
 const steps = [
   "Choose a cake shape",
@@ -40,7 +42,7 @@ const cakeShapes = [
   { image: "/square.jpg", label: "Square", id: 1 },
 ];
 
-export default function Page() {
+function Page({ toggleOrderForm }) {
   const [activeStep, setActiveStep] = useState(0);
   const [fillings, setFillings] = useState(null);
   const [filling, setFilling] = useState(null);
@@ -403,7 +405,7 @@ export default function Page() {
 
             {stepContent()}
           </div>
-          <div className="col-md-2 ">
+          <div className="col-md-2">
             <div className="d-flex h-100 flex-column justify-content-between gap-4 gap-lg-5">
               <div>
                 <h5>Total Price: {totalPrice} MDL</h5>
@@ -430,7 +432,12 @@ export default function Page() {
               </div>
 
               {activeStep === 7 && (
-                <button className="primary-btn form-btn">Order</button>
+                <button
+                  className="primary-btn form-btn"
+                  onClick={toggleOrderForm(constructedCake)}
+                >
+                  Order
+                </button>
               )}
             </div>
           </div>
@@ -439,3 +446,11 @@ export default function Page() {
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleOrderForm: (data) => dispatch(actions.showOrderForm(data)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Page);
