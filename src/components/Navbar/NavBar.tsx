@@ -13,6 +13,11 @@ import * as actions from "../../store/actions/actions";
 import { AppState } from "../../utils/interfaces";
 import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import Link from "next/link";
+import createSagaMiddleware from "redux-saga";
+import { applyMiddleware, legacy_createStore } from "redux";
+import watchSagas from "@/store/sagas/sagas";
+import reducer from "@/store/reducers/reducer";
+import { getRole } from "@/utils/roleDecoder";
 
 interface Props {
   isLoggedIn: boolean;
@@ -40,6 +45,18 @@ function NavBar({
     logoutUser();
     setOpen(false);
   };
+
+    // Redux
+    const sagaMiddleware = createSagaMiddleware();
+    const store = legacy_createStore(reducer, applyMiddleware(sagaMiddleware));
+    sagaMiddleware.run(watchSagas);
+  
+    // Authenticaton
+    const storeState = store.getState();
+    const loginState = storeState.isLoggedIn;
+    const token = storeState.token;
+
+    const role = getRole(token);
 
   return (
     <nav className={`${isLoggedIn ? "navbar" : "nav-landing-container"}`}>
