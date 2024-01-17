@@ -11,8 +11,12 @@ import { CakeElementModel } from "@/utils/interfaces";
 import {
   Button,
   FormControl,
+  FormControlLabel,
+  FormLabel,
   Input,
   InputLabel,
+  Radio,
+  RadioGroup,
   Step,
   StepLabel,
   Stepper,
@@ -52,7 +56,28 @@ export default function Page() {
   const [generatedImages, setGeneratedImages] = useState(null);
   const [generatedImage, setGeneratedImage] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  const [orderComment, setOrderComment] = useState("false");
+  const [orderComment, setOrderComment] = useState("");
+
+  const constructedCake = {
+    shape: cakeShapes[cakeShape],
+    fillingId: filling?.id,
+    decorId: decor?.id,
+    coatingId: coating?.id,
+    weight: weight,
+    productType: 2,
+    comments: orderComment,
+    inscription: inscription,
+    totalPrice: totalPrice,
+    aiPromt: promt,
+    currency: 0,
+    imageName: null,
+    imageUrl: generatedImage,
+    createdBy: "User",
+    createdAt: "2023-11-10T22:00:00.000+00:00",
+    updatedBy: null,
+    updatedAt: null,
+    productId: null,
+  };
 
   useEffect(() => {
     switch (activeStep) {
@@ -70,6 +95,7 @@ export default function Page() {
     }
 
     getTotalPrice();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
 
   const handleNext = async () => {
@@ -77,13 +103,8 @@ export default function Page() {
   };
 
   const getTotalPrice = async () => {
-    const res = await calculateCakeCost({
-      shape: cakeShapes[cakeShape],
-      fillingId: filling?.id,
-      decorId: decor?.id,
-      coatingId: coating?.id,
-      weight: weight,
-    });
+    const res = await calculateCakeCost(constructedCake);
+
     const data = await res
       .json()
       .catch((e) => console.log("Error: ", e.message));
@@ -223,13 +244,31 @@ export default function Page() {
       case 3:
         return (
           <FormControl>
-            <InputLabel>Weight</InputLabel>
-            <Input
-              id="weight"
+            <FormLabel id="demo-radio-buttons-group-label">Weight</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
               value={weight}
+              name="radio-buttons-group"
               onChange={(e) => setWeight(e.target.value)}
-              inputProps={{ maxLength: 25 }}
-            />
+            >
+              <FormControlLabel
+                value="1.5"
+                control={<Radio />}
+                label="1.5 kg"
+              />
+              <FormControlLabel value="2" control={<Radio />} label="2 kg" />
+              <FormControlLabel
+                value="2.5"
+                control={<Radio />}
+                label="2.5 kg"
+              />
+              <FormControlLabel value="3" control={<Radio />} label="3 kg" />
+              <FormControlLabel
+                value="3.5"
+                control={<Radio />}
+                label="3.5 kg"
+              />
+            </RadioGroup>
           </FormControl>
         );
 
@@ -256,18 +295,20 @@ export default function Page() {
 
       case 5:
         return (
-          <FormControl>
-            <InputLabel>Insription on the Cake</InputLabel>
-            <Input
-              id="weight"
-              value={inscription}
-              onChange={(e) => setInscription(e.target.value)}
-            />
+          <div className="row">
+            <FormControl>
+              <InputLabel>Insription on the Cake</InputLabel>
+              <Input
+                id="weight"
+                value={inscription}
+                onChange={(e) => setInscription(e.target.value)}
+              />
 
-            <button onClick={handleNext} className="primary-btn form-btn">
-              Save
-            </button>
-          </FormControl>
+              <button onClick={handleNext} className="primary-btn form-btn">
+                Save
+              </button>
+            </FormControl>
+          </div>
         );
 
       case 6:
@@ -329,7 +370,7 @@ export default function Page() {
 
       case 7:
         return (
-          <div>
+          <div className="row">
             <FormControl>
               <InputLabel>Order comments</InputLabel>
               <Input
@@ -337,14 +378,6 @@ export default function Page() {
                 value={orderComment}
                 onChange={(e) => setOrderComment(e.target.value)}
               />
-
-              <button
-                onClick={onGenerateImages}
-                className="primary-btn form-btn"
-                disabled={isLoading}
-              >
-                Send
-              </button>
             </FormControl>
           </div>
         );
@@ -370,26 +403,36 @@ export default function Page() {
 
             {stepContent()}
           </div>
-          <div className="col-md-2">
-            <h4>Total Price: {totalPrice}</h4>
-            <ul className="ms-auto">
-              {cakeShape && <li>{cakeShape}</li>}
-              {filling && <li>{filling.title}</li>}
-              {coating && <li>{coating.title}</li>}
-              {weight && <li>{weight}</li>}
-              {decor && <li>{decor.title}</li>}
-              {inscription && <li>{inscription}</li>}
-              {generatedImage && (
-                <li>
-                  <Image
-                    src={generatedImage}
-                    alt="selected image"
-                    width={50}
-                    height={50}
-                  />
-                </li>
+          <div className="col-md-2 ">
+            <div className="d-flex h-100 flex-column justify-content-between gap-4 gap-lg-5">
+              <div>
+                <h5>Total Price: {totalPrice} MDL</h5>
+                <ul className="ms-auto">
+                  {cakeShape && <li>Shape: {cakeShape}</li>}
+                  {filling && <li>Filling: {filling.title}</li>}
+                  {coating && <li>Coating: {coating.title}</li>}
+                  {weight && <li>Weight: {weight} kg</li>}
+                  {decor && <li>Decor: {decor.title}</li>}
+                  {inscription && <li>Inscription: {inscription}</li>}
+                  {generatedImage && (
+                    <li>
+                      <Image
+                        src={generatedImage}
+                        alt="selected image"
+                        width={50}
+                        height={50}
+                      />
+                    </li>
+                  )}
+
+                  {orderComment && <li> Comment: {orderComment}</li>}
+                </ul>
+              </div>
+
+              {activeStep === 7 && (
+                <button className="primary-btn form-btn">Order</button>
               )}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
