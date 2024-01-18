@@ -437,8 +437,8 @@ function Page({ toggleOrderForm }) {
                     <div className="col-md-3" key={imageUrl}>
                       <Image
                         src={imageUrl}
-                        height={300}
-                        width={300}
+                        height={400}
+                        width={400}
                         alt="Generated Image"
                         className="img-fluid"
                         onClick={() => onGeneratedImageClick(imageUrl)}
@@ -575,8 +575,8 @@ function Page({ toggleOrderForm }) {
                       <Image
                         src={generatedImage}
                         alt="selected image"
-                        width={70}
-                        height={70}
+                        width={100}
+                        height={100}
                       />
                     </li>
                   )}
