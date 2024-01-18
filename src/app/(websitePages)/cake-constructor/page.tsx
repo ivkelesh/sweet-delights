@@ -8,17 +8,22 @@ import {
   getCoating,
   getDecors,
   getFillings,
+  postCake,
 } from "@/utils/httpRequests";
 import { CakeElementModel, GenerateImageRequest } from "@/utils/interfaces";
 import {
+  Box,
   Button,
   FormControl,
   FormControlLabel,
   FormLabel,
   Input,
   InputLabel,
+  MenuItem,
+  OutlinedInput,
   Radio,
   RadioGroup,
+  Select,
   Step,
   StepLabel,
   Stepper,
@@ -27,6 +32,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import * as actions from "@/store/actions/actions";
 import TextField from '@mui/material/TextField';
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 const steps = [
   "Choose a cake shape",
@@ -36,7 +43,7 @@ const steps = [
   "Decor",
   "Insription on the cake",
   "Upload or Generate an image",
-  "Order comments",
+  "Order",
 ];
 
 const cakeShapes = [
@@ -93,6 +100,17 @@ function Page({ toggleOrderForm }) {
     productId: null,
   };
 
+  const postOrderModel = {
+    firstName: firstName,
+    lastName: lastName,
+    locality: locality,
+    phoneNumber: phoneNumber,
+    address: address,
+    deliveryDate: deliveryDate,
+    deliveryType: deliveryType,
+    orderedProduct: constructedCake
+  };
+
   const imageRequest: GenerateImageRequest = {
     shape: cakeShape,
     coating: coating?.title,
@@ -100,16 +118,6 @@ function Page({ toggleOrderForm }) {
     inscription: inscription,
     prompt: promt
   }
-
-  const inputStyle = {
-    marginBottom: '10px', // Расстояние между инпутами
-  };
-
-  const textFieldStyle = {
-    border: '1px solid #ccc', // Цвет рамки
-    padding: '8px', // Поля вокруг текста внутри инпута
-    marginTop: '5px', // Расстояние между верхней границей инпута и его содержимым
-  };
 
   useEffect(() => {
     switch (activeStep) {
@@ -142,6 +150,14 @@ function Page({ toggleOrderForm }) {
       .catch((e) => console.log("Error: ", e.message));
     setTotalPrice(data.totalPrice);
   };
+
+  const postOrder = async () => {
+    postOrderRequest();
+  }
+
+  const postOrderRequest = async () => {
+    await postCake(postOrderModel);
+  }
 
   const onGenerateImages = async () => {
     setLoading(true);
@@ -403,41 +419,82 @@ function Page({ toggleOrderForm }) {
       case 7:
         return (
           <div className="row">
-            <FormControl style={inputStyle}>
-              <InputLabel>Order comments</InputLabel>
-              <Input
-                id="generate"
-                value={orderComment}
-                onChange={(e) => setOrderComment(e.target.value)}
-              />
-              <TextField
+            <FormControl>
+                <TextField
                   id="outlined-controlled"
-                  label="FirstName"
-                  style={textFieldStyle}
+                  label="Order comments"
+                  value={orderComment}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setOrderComment(event.target.value);
+                  }}
+                />
+               <TextField
+                  id="outlined-controlled"
+                  label="First Name"
                   value={firstName}
-                  onChange={(event) => setFirstName(event.target.value)}
-              />
-              <TextField
+                  sx={{ marginTop: 2 }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setFirstName(event.target.value);
+                  }}
+                />
+                <TextField
                   id="outlined-controlled"
-                  label="LastName"
-                  style={textFieldStyle}
+                  label="Last Name"
                   value={lastName}
-                  onChange={(event) => setLastName(event.target.value)}
-              />
-              <TextField
+                  sx={{ marginTop: 2 }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setLastName(event.target.value);
+                  }}
+                />
+                <TextField
                   id="outlined-controlled"
-                  label="Locality"
-                  style={textFieldStyle}
+                  label="Location"
                   value={locality}
-                  onChange={(event) => setLocality(event.target.value)}
-              />
-              <TextField
-                  id="filled-basic"
+                  sx={{ marginTop: 2 }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setLocality(event.target.value);
+                  }}
+                />
+                <TextField
+                  id="outlined-controlled"
                   label="Address"
-                  style={textFieldStyle}
                   value={address}
-                  onChange={(event) => setAddress(event.target.value)}
-              />
+                  sx={{ marginTop: 2 }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setAddress(event.target.value);
+                  }}
+                />
+                <TextField
+                  id="outlined-controlled"
+                  label="Phone number"
+                  value={phoneNumber}
+                  sx={{ marginTop: 2 }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setPhoneNumber(event.target.value);
+                  }}
+                />
+                <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 2 }}>
+                  <InputLabel id="demo-simple-select-label">Delivery Type</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={deliveryType}
+                    label="Delivery Type"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setDeliveryType(event.target.value);
+                    }}
+                  >
+                    <MenuItem value={0}>Pickup</MenuItem>
+                    <MenuItem value={1}>Courier Delivery</MenuItem>
+                  </Select>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DatePicker
+                    label="Controlled picker"
+                    value={deliveryDate}
+                    onChange={(newValue) => setDeliveryDate(newValue)}
+                  />
+                </LocalizationProvider>
             </FormControl>
           </div>
         );
@@ -492,7 +549,7 @@ function Page({ toggleOrderForm }) {
               {activeStep === 7 && (
                 <button
                   className="primary-btn form-btn"
-                  onClick={toggleOrderForm(constructedCake)}
+                  onClick={async () => await postCake(postOrderModel)}
                 >
                   Order
                 </button>
