@@ -51,6 +51,7 @@ const cakeShapes = [
   { image: "/square.jpg", label: "Square", id: 1 },
 ];
 
+
 function Page({ toggleOrderForm }) {
   const [activeStep, setActiveStep] = useState(0);
   const [fillings, setFillings] = useState(null);
@@ -172,10 +173,24 @@ function Page({ toggleOrderForm }) {
   };
 
   const ConfirmationDialog = () => (
-    <div className="confirmation-dialog">
+    <div style={{ 
+      border: '1px solid #ccc',
+      padding: '20px',
+      borderRadius: '8px',
+      textAlign: 'center',
+      maxWidth: '300px',
+      margin: 'auto',
+      backgroundColor: '#fff'
+    }}>
       <p>Your order has been placed successfully!</p>
       <p>Order Number: {orderNumber}</p>
-      <button onClick={closeConfirmation}>Close</button>
+      {/* <button style={{ 
+        backgroundColor: '#007bff',
+        color: '#fff',
+        padding: '10px 15px',
+        borderRadius: '5px',
+        cursor: 'pointer'
+      }} onClick={closeConfirmation}>Close</button> */}
     </div>
   );
 
