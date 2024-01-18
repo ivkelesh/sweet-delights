@@ -124,9 +124,18 @@ function NavBar({
                 <span className="dropdown-indicator">&#9662;</span>
                 <div className="dropdown-menu" id="products-menu">
                   <a href="/cakes">Cakes</a>
-                  <a href="/coating">Coating</a>
-                  <a href="/decors">Decor</a>
-                  <a href="/fillings">Filling</a>
+                  <a href="/cupcakes">Cupcakes</a>
+                  <a href="/cheesecakes">Cheesecakes</a>
+                  <a href="/macarons">Macarons</a>
+                </div>
+              </div>
+              <div className="nav-link">
+                Ingredients
+                <span className="dropdown-indicator">&#9662;</span>
+                <div className="dropdown-menu" id="products-menu">
+                  <a href="/fillings">Fillings</a>
+                  <a href="/coatings">Coatings</a>
+                  <a href="/decors">Decors</a>
                 </div>
               </div>
               <a className="nav-link" href="/cake-constructor">
@@ -140,10 +149,10 @@ function NavBar({
               </a>
               <div className="icon-container">
                 <div className="login-icon" onClick={toggleLoginForm}>
-                  <FaSignInAlt size={30} />
+                  <FaSignInAlt size={30}/>
                 </div>
                 <div className="register-icon" onClick={toggleRegisterForm}>
-                  <FaUserPlus size={30} />
+                  <FaUserPlus size={30}/>
                 </div>
               </div>
             </div>

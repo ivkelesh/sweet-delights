@@ -14,7 +14,7 @@ export const url = "http://localhost:8082/api";
 
 // Authentication
 export function registerUser(registerData: RegisterCredentials) {
-  return fetch(`${url}/auth/register`, {
+  return fetch(`http://localhost:8080/api/auth/register`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -24,7 +24,7 @@ export function registerUser(registerData: RegisterCredentials) {
 }
 
 export function loginUser(loginData: LoginCredentials) {
-  return fetch(`${url}/auth/login`, {
+  return fetch(`http://localhost:8080/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -133,7 +133,7 @@ export function updateItem(
 }
 
 export function getCakes(pagedRequest: PagedRequest) {
-  return fetch("https://localhost:7091/api/products/cakes", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/products/cakes", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -143,7 +143,7 @@ export function getCakes(pagedRequest: PagedRequest) {
 }
 
 export function getCheesecakes(pagedRequest: PagedRequest) {
-  return fetch("https://localhost:7091/api/products/cheesecakes", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/products/cheesecakes", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -153,7 +153,7 @@ export function getCheesecakes(pagedRequest: PagedRequest) {
 }
 
 export function getMacarons(pagedRequest: PagedRequest) {
-  return fetch("https://localhost:7091/api/products/macarons", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/products/macarons", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -163,7 +163,7 @@ export function getMacarons(pagedRequest: PagedRequest) {
 }
 
 export function getCupcakes(pagedRequest: PagedRequest) {
-  return fetch("https://localhost:7091/api/products/cupcakes", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/products/cupcakes", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -298,7 +298,7 @@ export function generateImages(prompt: string) {
 
 export function generateImagesNew(request: GenerateImageRequest) {
   return fetch(
-    "https://localhost:7091/api/orders/generate-images-parallel",
+    "https://confectioneryplatform.azurewebsites.net/api/orders/generate-images-parallel",
     {
       method: "POST",
       headers: {

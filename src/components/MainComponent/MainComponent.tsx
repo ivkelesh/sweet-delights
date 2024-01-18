@@ -91,10 +91,7 @@ function MainComponent(props: Props): JSX.Element {
                 </header>
                 {isLoggedIn ? (
                     <>
-                        <Dashboard wishlists={wishlists} />
-                        {showWishlistForm ? (
-                            <WishlistForm update={!editWishlistId ? false : true} />
-                        ) : null}
+                        <LandingPage />
                     </>
                 ) : (
                     <>

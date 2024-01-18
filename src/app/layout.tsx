@@ -36,7 +36,7 @@ export default function RootLayout({
         <Provider store={store}>
           <ThemeProvider theme={theme}>
             <header>
-              <NavBar isLoggedIn={false} />
+              <NavBar isLoggedIn={loginState} />
             </header>
             <CssBaseline />
             <main>{children}</main>
