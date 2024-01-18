@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import * as actions from "@/store/actions/actions";
@@ -16,6 +16,9 @@ import RegisterForm from "@/components/Forms/RegisterForm";
 import LoginForm from "@/components/Forms/LoginForm";
 import Footer from "@/components/Footer/Footer";
 import { AppState, WishlistData } from "@/utils/interfaces";
+
+const AuthContext = createContext<{ loggedIn: boolean; setLoggedStatus: (loggedIn: boolean) => void; role : string | null}>({ loggedIn: false, setLoggedStatus: () => {}, role: null });
+export {AuthContext}
 
 interface Props {
   isLoggedIn: boolean;
@@ -46,6 +49,8 @@ function MainComponent(props: Props): JSX.Element {
   } = props;
 
   const [wishlists, setWishlists] = useState([]);
+  const [loggedIn, setLoggedStatus] = useState<boolean>(false);
+  const [role, setRole] = useState<string | null>(null);
 
   const fetchWishlists = async () => {
     const res = await getWishlists(token);
@@ -87,6 +92,7 @@ function MainComponent(props: Props): JSX.Element {
 
   return (
     <>
+    <AuthContext.Provider value={{loggedIn, setLoggedStatus, role}}>
       <div className="page-container">
         {isLoggedIn ? (
           <>
@@ -128,6 +134,7 @@ function MainComponent(props: Props): JSX.Element {
           }
         />
       </div>
+    </AuthContext.Provider>
     </>
   );
 }
