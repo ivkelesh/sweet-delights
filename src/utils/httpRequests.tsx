@@ -173,7 +173,7 @@ export function getCupcakes(pagedRequest: PagedRequest) {
 }
 
 export function getOrders(getOrdersListModel: GetOrdersListModel) {
-  return fetch("https://localhost:7091/api/orders", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/orders", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -183,7 +183,7 @@ export function getOrders(getOrdersListModel: GetOrdersListModel) {
 }
 
 export function getOrderById(orderId: number) {
-  return fetch(`https://localhost:7091/api/orders/${orderId}`, {
+  return fetch(`https://confectioneryplatform.azurewebsites.net/api/orders/${orderId}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -229,7 +229,7 @@ export function calculateCakeCost(selectedArgs: any) {
 }
 
 export function exportAsExcel(getOrdersListModel: GetOrdersListModel) {
-  return fetch("https://localhost:7091/api/orders/get-orders-excel", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/orders/get-orders-excel", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -257,7 +257,7 @@ export function exportAsExcel(getOrdersListModel: GetOrdersListModel) {
 }
 
 export function generateReport(generateReportModel: GenerateReportModel) {
-  return fetch("https://localhost:7091/api/orders/generate-report", {
+  return fetch("https://confectioneryplatform.azurewebsites.net/api/orders/generate-report", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
