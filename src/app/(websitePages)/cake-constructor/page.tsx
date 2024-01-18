@@ -26,6 +26,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import * as actions from "@/store/actions/actions";
+import TextField from '@mui/material/TextField';
 
 const steps = [
   "Choose a cake shape",
@@ -61,6 +62,16 @@ function Page({ toggleOrderForm }) {
   const [isLoading, setLoading] = useState(false);
   const [orderComment, setOrderComment] = useState("");
 
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [locality, setLocality] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState(null);
+  const [deliveryType, setDeliveryType] = useState(null);
+
+
+
   const constructedCake = {
     shape: cakeShapes[cakeShape],
     fillingId: filling?.id,
@@ -89,6 +100,16 @@ function Page({ toggleOrderForm }) {
     inscription: inscription,
     prompt: promt
   }
+
+  const inputStyle = {
+    marginBottom: '10px', // Расстояние между инпутами
+  };
+
+  const textFieldStyle = {
+    border: '1px solid #ccc', // Цвет рамки
+    padding: '8px', // Поля вокруг текста внутри инпута
+    marginTop: '5px', // Расстояние между верхней границей инпута и его содержимым
+  };
 
   useEffect(() => {
     switch (activeStep) {
@@ -382,12 +403,40 @@ function Page({ toggleOrderForm }) {
       case 7:
         return (
           <div className="row">
-            <FormControl>
+            <FormControl style={inputStyle}>
               <InputLabel>Order comments</InputLabel>
               <Input
                 id="generate"
                 value={orderComment}
                 onChange={(e) => setOrderComment(e.target.value)}
+              />
+              <TextField
+                  id="outlined-controlled"
+                  label="FirstName"
+                  style={textFieldStyle}
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
+              />
+              <TextField
+                  id="outlined-controlled"
+                  label="LastName"
+                  style={textFieldStyle}
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
+              />
+              <TextField
+                  id="outlined-controlled"
+                  label="Locality"
+                  style={textFieldStyle}
+                  value={locality}
+                  onChange={(event) => setLocality(event.target.value)}
+              />
+              <TextField
+                  id="filled-basic"
+                  label="Address"
+                  style={textFieldStyle}
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
               />
             </FormControl>
           </div>

@@ -13,7 +13,7 @@ import {
 import {getCoating} from "@/utils/httpRequests";
 import Box from "@mui/material/Box";
 
-const Coating = () => {
+const Coatings = () => {
     const [products, setProducts] = useState([]);
 
     const fetchCoatings = async () => {
@@ -56,4 +56,4 @@ const Coating = () => {
     );
 };
 
-export default Coating;
+export default Coatings;
