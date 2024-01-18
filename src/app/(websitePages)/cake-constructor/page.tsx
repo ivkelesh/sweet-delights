@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import {
   calculateCakeCost,
   generateImages,
+  generateImagesNew,
   getCoating,
   getDecors,
   getFillings,
 } from "@/utils/httpRequests";
-import { CakeElementModel } from "@/utils/interfaces";
+import { CakeElementModel, GenerateImageRequest } from "@/utils/interfaces";
 import {
   Button,
   FormControl,
@@ -81,6 +82,14 @@ function Page({ toggleOrderForm }) {
     productId: null,
   };
 
+  const imageRequest: GenerateImageRequest = {
+    shape: cakeShape,
+    coating: coating?.title,
+    decor: decor?.title,
+    inscription: inscription,
+    prompt: promt
+  }
+
   useEffect(() => {
     switch (activeStep) {
       case 1:
@@ -116,7 +125,7 @@ function Page({ toggleOrderForm }) {
   const onGenerateImages = async () => {
     setLoading(true);
 
-    await generateImages(promt)
+    await generateImagesNew(imageRequest)
       .then((res) => res.json())
       .then((data) => {
         setGeneratedImages(data.imageUrls);

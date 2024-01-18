@@ -181,4 +181,12 @@ export interface Order {
   isFromCatalog: boolean
 }
 
+export interface GenerateImageRequest {
+  shape?: string,
+  coating?: string,
+  decor?: string,
+  inscription?: string,
+  prompt?: string
+}
+
 
