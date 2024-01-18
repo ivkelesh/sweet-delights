@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import * as actions from '../../store/actions/actions';
 import { LoginCredentials } from '../../utils/interfaces';
@@ -17,6 +17,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
+import { AuthContext } from '@/app/page';
 
 interface Props {
     toggleLoginForm: () => void;
@@ -30,6 +31,9 @@ interface LoginState {
 }
 
 function LoginForm({ toggleLoginForm, login }: Props): JSX.Element {
+    
+    const { setLoggedStatus } = useContext(AuthContext);
+
     // State
     const [values, setValues] = useState<LoginState>({
         email: '',
@@ -109,6 +113,7 @@ function LoginForm({ toggleLoginForm, login }: Props): JSX.Element {
                 const username = res.fullName;
                 login(token, username);
                 toggleLoginForm();
+                setLoggedStatus(true);
             })
             .catch((err) => {
                 if (err.message === 'Incorrect credentials') {

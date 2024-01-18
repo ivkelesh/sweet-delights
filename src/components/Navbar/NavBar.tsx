@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { connect } from "react-redux";
 
 import Settings from "@material-ui/icons/SettingsOutlined";
@@ -18,6 +18,7 @@ import { applyMiddleware, legacy_createStore } from "redux";
 import watchSagas from "@/store/sagas/sagas";
 import reducer from "@/store/reducers/reducer";
 import { getRole } from "@/utils/roleDecoder";
+import { AuthContext } from "@/app/page";
 
 interface Props {
   isLoggedIn: boolean;
@@ -58,9 +59,11 @@ function NavBar({
 
     const role = getRole(token);
 
+    const { loggedIn } = useContext(AuthContext);
+
   return (
-    <nav className={`${isLoggedIn ? "navbar" : "nav-landing-container"}`}>
-      {isLoggedIn ? (
+    <nav className={`${loggedIn ? "navbar" : "nav-landing-container"}`}>
+      {loggedIn ? (
         <>
           <div className="main-heading">
             <h3 className="nav-greeting">Welcome back, {username}</h3>
