@@ -578,11 +578,11 @@ function Page({ toggleOrderForm }) {
                   Order
                 </button>
               )}
+              {confirmationVisible && <ConfirmationDialog />}
             </div>
           </div>
         </div>
       </div>
-      {confirmationVisible && <ConfirmationDialog />}
     </div>
   );
 }
