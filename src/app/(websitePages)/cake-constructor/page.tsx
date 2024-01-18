@@ -77,7 +77,7 @@ function Page({ toggleOrderForm }) {
   const [deliveryDate, setDeliveryDate] = useState(null);
   const [deliveryType, setDeliveryType] = useState(null);
 
-
+  const [orderNumber, setOrderNumber] = useState(null);
 
   const constructedCake = {
     shape: cakeShapes[cakeShape],
@@ -119,6 +119,16 @@ function Page({ toggleOrderForm }) {
     prompt: promt
   }
 
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+
+  const closeConfirmation = () => {
+    setConfirmationVisible(false);
+  };
+
+  const openConfirmation = () => {
+    setConfirmationVisible(true);
+  };
+
   useEffect(() => {
     switch (activeStep) {
       case 1:
@@ -152,12 +162,22 @@ function Page({ toggleOrderForm }) {
   };
 
   const postOrder = async () => {
-    postOrderRequest();
-  }
+    const res = await postCake(postOrderModel);
 
-  const postOrderRequest = async () => {
-    await postCake(postOrderModel);
-  }
+    const data = await res
+      .json()
+      .catch((e) => console.log("Error: ", e.message));
+    setOrderNumber(data.orderId);
+    openConfirmation();
+  };
+
+  const ConfirmationDialog = () => (
+    <div className="confirmation-dialog">
+      <p>Your order has been placed successfully!</p>
+      <p>Order Number: {orderNumber}</p>
+      <button onClick={closeConfirmation}>Close</button>
+    </div>
+  );
 
   const onGenerateImages = async () => {
     setLoading(true);
@@ -473,6 +493,7 @@ function Page({ toggleOrderForm }) {
                     setPhoneNumber(event.target.value);
                   }}
                 />
+                <Box sx={{ width: 255 }}>
                 <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 2 }}>
                   <InputLabel id="demo-simple-select-label">Delivery Type</InputLabel>
                   <Select
@@ -488,13 +509,16 @@ function Page({ toggleOrderForm }) {
                     <MenuItem value={1}>Courier Delivery</MenuItem>
                   </Select>
                 </FormControl>
+                </Box>
+                <Box sx={{ width: 350 }}>
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <DatePicker
-                    label="Controlled picker"
+                    label="Delivery Date"
                     value={deliveryDate}
                     onChange={(newValue) => setDeliveryDate(newValue)}
                   />
                 </LocalizationProvider>
+                </Box>
             </FormControl>
           </div>
         );
@@ -549,7 +573,7 @@ function Page({ toggleOrderForm }) {
               {activeStep === 7 && (
                 <button
                   className="primary-btn form-btn"
-                  onClick={async () => await postCake(postOrderModel)}
+                  onClick={postOrder}
                 >
                   Order
                 </button>
@@ -558,6 +582,7 @@ function Page({ toggleOrderForm }) {
           </div>
         </div>
       </div>
+      {confirmationVisible && <ConfirmationDialog />}
     </div>
   );
 }
