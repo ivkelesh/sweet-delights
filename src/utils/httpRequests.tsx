@@ -6,6 +6,7 @@ import {
   PagedRequest,
   GetOrdersListModel,
   GenerateReportModel,
+  GenerateImageRequest,
 } from "./interfaces";
 
 // export const url = 'https://wishlist-service-dev.herokuapp.com/api';
@@ -291,6 +292,19 @@ export function generateImages(prompt: string) {
       headers: {
         "Content-type": "application/json",
       },
+    }
+  );
+}
+
+export function generateImagesNew(request: GenerateImageRequest) {
+  return fetch(
+    "https://localhost:7091/api/orders/generate-images-parallel",
+    {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(request),
     }
   );
 }
