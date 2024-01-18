@@ -116,8 +116,8 @@ function NavBar({
               </Link>
             </div>
             <div className="nav-links">
-              <a className="nav-link" href="#my-orders">
-                My orders
+              <a className="nav-link" href="/orders">
+                Orders
               </a>
               <div className="nav-link">
                 Products

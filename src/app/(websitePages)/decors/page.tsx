@@ -30,7 +30,7 @@ const Decors = () => {
     }, [] );
 
     return (
-        <Container maxWidth="lg" style={{ marginTop: '3rem', marginBottom: '4rem' }}>
+        <Container maxWidth="lg" style={{ marginTop: '9rem', marginBottom: '4rem' }}>
             <Box justifyContent="center" marginX="170px">
                 <Grid container spacing={4} justifyContent="center">
                     {products.map((product) => (

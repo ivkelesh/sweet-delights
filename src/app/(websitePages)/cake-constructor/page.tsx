@@ -42,7 +42,7 @@ const steps = [
   "Specify the weight",
   "Decor",
   "Insription on the cake",
-  "Upload or Generate an image",
+  "Generate an image",
   "Order",
 ];
 
@@ -508,7 +508,7 @@ function Page({ toggleOrderForm }) {
                     setPhoneNumber(event.target.value);
                   }}
                 />
-                <Box sx={{ width: 255 }}>
+                <Box sx={{ width: 245 }}>
                 <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 2 }}>
                   <InputLabel id="demo-simple-select-label">Delivery Type</InputLabel>
                   <Select
@@ -575,8 +575,8 @@ function Page({ toggleOrderForm }) {
                       <Image
                         src={generatedImage}
                         alt="selected image"
-                        width={50}
-                        height={50}
+                        width={70}
+                        height={70}
                       />
                     </li>
                   )}
